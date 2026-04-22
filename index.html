@@ -1,42 +1,96 @@
 <head>
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
-  <script>
-    // Tailwind Config for Clearline7 Colors
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            radiantGold: '#FFD700',
-            systemBlack: '#1A1A1A',
-          }
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        // Tailwind Config for Clearline7 Colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        radiantGold: '#FFD700',
+                        systemBlack: '#1A1A1A',
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
 </head>
-<body class="bg-systemBlack text-white p-8">
-  <div id="vsm-dashboard" class="border border-radiantGold p-4 rounded shadow-lg">
-    <h1 class="text-2xl font-bold flex items-center gap-2">
-      <i data-lucide="layout-grid"></i> Radiant Seven Dashboard
-    </h1>
-    <p class="mt-2 text-gray-400">Status: Station Access Pending. Operating on Basic Stack.</p>
-  </div>
 
-  <script>
-    // Initialize Icons
-    lucide.createIcons();
-    
-    // jQuery Phase Seal Logic
-    $(function() {
-      $("#vsm-dashboard").draggable();
-      console.log("Bell Phase Engine Initialized...");
-    });
-  </script>
+<body class="bg-systemBlack text-white p-8">
+    <div id="vsm-dashboard" class="border border-radiantGold p-4 rounded shadow-lg">
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+            <i data-lucide="layout-grid"></i> Radiant Seven Dashboard
+        </h1>
+        <p class="mt-2 text-gray-400">Status: Station Access Pending. Operating on Basic Stack.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+
+        <div class="vsm-card bg-black/50 border-t-4 border-radiantGold p-4 rounded-lg shadow-2xl backdrop-blur-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-radiantGold font-bold tracking-widest uppercase text-sm">Value Stream</h3>
+                <i data-lucide="activity" class="text-radiantGold w-4"></i>
+            </div>
+            <canvas id="vsmChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="vsm-card bg-black/50 border-t-4 border-radiantGold p-4 rounded-lg shadow-2xl backdrop-blur-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-radiantGold font-bold tracking-widest uppercase text-sm">RDX Status</h3>
+                <i data-lucide="folder-git-2" class="text-radiantGold w-4"></i>
+            </div>
+            <ul class="space-y-2 text-xs font-mono">
+                <li class="flex justify-between border-b border-white/10 pb-1"><span>Root/</span> <span
+                        class="text-green-400">Classified</span></li>
+                <li class="flex justify-between border-b border-white/10 pb-1"><span>Content-Factor/</span> <span
+                        class="text-radiantGold">Pending</span></li>
+                <li class="flex justify-between"><span>Style-System/</span> <span
+                        class="text-green-400">Classified</span></li>
+            </ul>
+        </div>
+
+        <div
+            class="vsm-card bg-black/50 border-t-4 border-radiantGold p-4 rounded-lg shadow-2xl backdrop-blur-md flex flex-col justify-center items-center py-8">
+            <h3 class="text-radiantGold font-bold tracking-widest uppercase text-sm mb-2">Daily Deploy</h3>
+            <div class="text-5xl font-black text-white">01</div>
+            <p class="text-[10px] uppercase mt-2 text-gray-500">Last push: Today 22:49</p>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize VSM Chart
+        const ctx = document.getElementById('vsmChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                datasets: [{
+                    label: 'Efficiency',
+                    data: [65, 59, 80, 81, 95],
+                    borderColor: '#FFD700',
+                    tension: 0.4
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
+        });
+        lucide.createIcons();
+        $(".vsm-card").draggable({ containment: "parent" });
+    </script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // jQuery Phase Seal Logic
+        $(function () {
+            $("#vsm-dashboard").draggable();
+            console.log("Bell Phase Engine Initialized...");
+        });
+    </script>
 </body>
