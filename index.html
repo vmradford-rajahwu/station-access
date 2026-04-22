@@ -1,11 +1,12 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+
 
     <script>
         // Tailwind Config for Clearline7 Colors
@@ -62,9 +63,53 @@
         </div>
 
     </div>
+    <div id="dudael-lab" class="bg-black border-2 border-radiantGold p-6 rounded-none font-mono">
+        <div class="flex justify-between items-center border-b border-radiantGold/30 pb-2 mb-4">
+            <span class="text-[10px] uppercase tracking-tighter text-radiantGold">Bell Phase Engine // Prototype
+                v1.0</span>
+            <div id="phase-indicator" class="h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div id="narrative-window" class="h-32 text-sm text-gray-300 italic mb-4 overflow-y-auto">
+            // System Initialized. Waiting for Phase 01...
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+            <button onclick="transitionPhase(1)"
+                class="phase-btn border border-radiantGold text-[10px] p-2 hover:bg-radiantGold hover:text-black transition-all">INITIALIZE
+                SEAL</button>
+            <button onclick="transitionPhase(2)" id="btn-phase-2"
+                class="opacity-30 cursor-not-allowed border border-white/20 text-[10px] p-2" disabled>RESONANCE
+                PHASE</button>
+        </div>
+    </div>
+
     <script>
+        let currentPhase = 0;
+
+        function transitionPhase(target) {
+            const $window = $('#narrative-window');
+            const $indicator = $('#phase-indicator');
+
+            if (target === 1) {
+                currentPhase = 1;
+                $window.html("Phase 01: Seal Engaged. The architecture of DUDAEL is now visible.");
+                $indicator.removeClass('bg-red-500').addClass('bg-yellow-500');
+
+                // Unlock Phase 2
+                $('#btn-phase-2').removeClass('opacity-30 cursor-not-allowed border-white/20')
+                    .addClass('border-radiantGold').prop('disabled', false);
+            }
+
+            if (target === 2 && currentPhase === 1) {
+                currentPhase = 2;
+                $window.append("<br><br>Phase 02: Resonance. The system is breathing.");
+                $indicator.removeClass('bg-yellow-500').addClass('bg-green-500');
+                // Trigger a jQuery UI shake to show power
+                $("#dudael-lab").effect("shake", { distance: 5 });
+            }
+        }
+
         // Initialize VSM Chart
         const ctx = document.getElementById('vsmChart').getContext('2d');
         new Chart(ctx, {
@@ -82,8 +127,7 @@
         });
         lucide.createIcons();
         $(".vsm-card").draggable({ containment: "parent" });
-    </script>
-    <script>
+
         // Initialize Icons
         lucide.createIcons();
 
